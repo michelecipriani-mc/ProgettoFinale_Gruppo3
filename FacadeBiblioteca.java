@@ -8,9 +8,9 @@ import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
 public class FacadeBiblioteca {
-    LibroDatabase libroRepoService = new LibroDatabase();
-    UtenteDatabase UtenteRepoService = new UtenteDatabase();
-    PrestitoDatabase PrestitoRepoService = new LibroDatabase();
+    LibroDatabase libroDatabase = new LibroDatabase();
+    UtenteDatabase UtenteDatabase = new UtenteDatabase();
+    PrestitoDatabase PrestitoDatabase = new LibroDatabase();
 
     // Metodo principale che mostra il menu generale della biblioteca
     public void menu() {
