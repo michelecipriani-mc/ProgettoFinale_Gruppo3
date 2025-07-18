@@ -90,55 +90,26 @@ public class FacadeBiblioteca {
                         }
                         break;
                     case 2:
-                        // Modifica di un utente esistente
-                        System.out.print("Inserisci ID utente da modificare: ");
-                        int id_utente = intScanner.nextInt();
-                        Utente utenteEsistente = UtenteDatabase.getUtenteById(id_utente);
-                        if (utenteEsistente == null) {
-                            System.out.println("Utente con ID " + id_utente + " non trovato.");
-                        } else {
-                            System.out.println("Stai modificando l'utente: " + utenteEsistente);
-                            System.out.print("Inserisci nuovo nome (lascia vuoto per non modificare): ");
-                            stringScanner.nextLine();
-                            String nomeAggiornato = stringScanner.nextLine();
-                            if (nomeAggiornato.isEmpty()) {
-                                nomeAggiornato = utenteEsistente.getNome();
-                            }
+                    // Modifica di un utente esistente
+                    Scanner s2 = new Scanner(System.in);
+                    Scanner s = new Scanner(System.in);
+                        System.out.println("Inserisci il nome utente: ");
+                        String nome = s2.nextLine();
+                        System.out.println("Inserisci email: ");
+                        String email = s2.nextLine();
+                    
+                        System.out.println("Inseriscila l id dell attore da aggiornare: ");
+                        int id_utente = s.nextInt();
 
-                            System.out.print("Inserisci nuova email (lascia vuoto per non modificare): ");
-                            String emailAggiornato = stringScanner.nextLine();
-                            if (emailAggiornato.isEmpty()) {
-                                emailAggiornato = utenteEsistente.getEmail();
-                            }
+                        Utente u = new Utente(id_utente, nome, email);
+                        UtenteDatabase.update(id_utente,u);
 
-                            Utente utenteAggiornato = new Utente(id_utente, nomeAggiornato, emailAggiornato);
-                            UtenteDatabase.update(id_utente, utenteAggiornato);
-                            System.out.println("Utente aggiornato con successo!");
-                        }
                         break;
                     case 3:
                         // Cancellazione di un utente
                         System.out.print("Inserisci ID utente da cancellare: ");
                         id_utente = intScanner.nextInt();
-                        utenteEsistente = UtenteDatabase.getUtenteById(id_utente);
-                        if (utenteEsistente == null) {
-                            System.out.println("Utente con ID " + id_utente + " non trovato.");
-                        } else {
-                            System.out.println("Confermi la cancellazione dell'utente: " + utenteEsistente + " (s/n)?");
-                            stringScanner.nextLine();
-                            String conferma = stringScanner.nextLine();
-                            if (conferma.equalsIgnoreCase("s")) {
-                                // Controllo: non si può cancellare l'utente se ha prestiti attivi
-                                if (!PrestitiDatabase.getPrestitiByUtente(utenteEsistente).isEmpty()) {
-                                    System.out.println(
-                                            "Errore: L'utente ha prestiti attivi e non può essere cancellato.");
-                                } else {
-                                    UtenteDatabase.delete(id_utente);
-                                    System.out.println("Utente cancellato con successo!");
-                                }
-                            } else {
-                                System.out.println("Cancellazione annullata.");
-                            }
+                        UtenteDatabase.delete(id_utente);
                         }
                         break;
                     case 4:
@@ -155,9 +126,12 @@ public class FacadeBiblioteca {
                 }
             } while (scelta != 5);
 
-        } catch (Exception e) {
-            System.err.println("Errore nel menu utente: " + e.getMessage());
-        }
+        }catch(
+
+    Exception e)
+    {
+        System.err.println("Errore nel menu utente: " + e.getMessage());
+    }
     }
 
     // Menu per la gestione dei libri
@@ -203,69 +177,39 @@ public class FacadeBiblioteca {
                         break;
                     case 2:
                         // Modifica di un libro esistente
-                        System.out.print("Inserisci ID libro da modificare: ");
-                        int id_libro = intScanner.nextInt();
-                        Libro libroEsistente = LibriDatabase.getLibroById(id_libro);
-                        if (libroEsistente == null) {
-                            System.out.println("Libro con ID " + id_libro + " non trovato.");
-                        } else {
-                            System.out.println("Stai modificando il libro: " + libroEsistente);
-                            System.out.print("Inserisci nuovo titolo (lascia vuoto per non modificare): ");
-                            stringScanner.nextLine();
-                            String titoloAggiornato = stringScanner.nextLine();
-                            if (titoloAggiornato.isEmpty()) {
-                                titoloAggiornato = libroEsistente.getTitolo();
-                            }
-
-                            System.out.print("Inserisci nuovo autore (lascia vuoto per non modificare): ");
-                            String autoreAggiornato = stringScanner.nextLine();
-                            if (autoreAggiornato.isEmpty()) {
-                                autoreAggiornato = libroEsistente.getAutore();
-                            }
-
-                            System.out.print(
-                                    "Inserisci nuova data di pubblicazione (dd/MM/yyyy, lascia vuoto per non modificare): ");
-                            String dataAggiornataStr = stringScanner.nextLine();
-                            Date dataPubblicazioneAggiornata = libroEsistente.getDataPubblicazione();
-                            if (!dataAggiornataStr.isEmpty()) {
-                                try {
-                                    dataPubblicazioneAggiornata = sdf.parse(dataAggiornataStr);
-                                } catch (ParseException e) {
-                                    System.out.println("Formato data non valido. Lasciando la data originale.");
-                                }
-                            }
-
-                            Libro libroAggiornato = new Libro(id_libro, titoloAggiornato, autoreAggiornato,
-                                    new java.sql.Date(dataPubblicazioneAggiornata.getTime()));
-                            LibriDatabase.update(id_libro, libroAggiornato);
-                            System.out.println("Libro aggiornato con successo!");
+                        Scanner s2 = new Scanner(System.in);
+                        Scanner s = new Scanner(System.in);
+                        System.out.println("Inserisci il titolo: ");
+                        String titolo1 = s2.nextLine();
+                        System.out.println("Inserisci il autore: ");
+                        String autore1 = s2.nextLine();
+                        System.out.println("Inserisci la data pub: ");
+                        String data_publicazione = s2.nextLine();
+                        SimpleDateFormat sdf1 = new SimpleDateFormat("dd/MM/yyyy");
+                        Date d12 = null;
+                        try {
+                            d12 = sdf1.parse(data_publicazione);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
                         }
+                        java.sql.Date d123 = new java.sql.Date(d12.getTime());
+
+                        System.out.println("Inseriscila l id dell libro da aggiornare: ");
+                        int cod_l = s.nextInt();
+
+                        Libro libro = new Libro(cod_l, titolo, autore, d123);
+                        libro.update(cod_l, libro);
+
                         break;
                     case 3:
                         // Cancellazione di un libro
                         System.out.print("Inserisci ID libro da cancellare: ");
                         id_libro = intScanner.nextInt();
-                        libroEsistente = LibriDatabase.getLibroById(id_libro);
-                        if (libroEsistente == null) {
-                            System.out.println("Libro con ID " + id_libro + " non trovato.");
-                        } else {
-                            // Controllo: non si può cancellare il libro se è in prestito
-                            if (PrestitiDatabase.isLibroInPrestito(libroEsistente)) {
-                                System.out.println(
-                                        "Errore: Il libro è attualmente in prestito e non può essere cancellato.");
-                            } else {
-                                System.out
-                                        .println("Confermi la cancellazione del libro: " + libroEsistente + " (s/n)?");
-                                stringScanner.nextLine();
-                                String conferma = stringScanner.nextLine();
-                                if (conferma.equalsIgnoreCase("s")) {
-                                    LibriDatabase.delete(id_libro);
-                                    System.out.println("Libro cancellato con successo!");
-                                } else {
-                                    System.out.println("Cancellazione annullata.");
-                                }
-                            }
-                        }
+                        // Cancellazione di un utente
+                        System.out.print("Inserisci ID utente da cancellare: ");
+                        id_libro = intScanner.nextInt();
+                        LibroDatabase.delete(id_libro);
+
                         break;
                     case 4:
                         // Visualizzazione di tutti i libri
@@ -281,7 +225,9 @@ public class FacadeBiblioteca {
                 }
             } while (scelta != 5);
 
-        } catch (Exception e) {
+        } catch (
+
+        Exception e) {
             System.err.println("Errore nel menu libro: " + e.getMessage());
         }
     }
