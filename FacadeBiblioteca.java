@@ -25,6 +25,7 @@ public class FacadeBiblioteca {
                 System.out.println("'3' Gestione Prestiti");
                 System.out.println("'4' Esci");
                 System.out.print("Scegli un'opzione: ");
+                
                 sceltaPrincipale = intScanner.nextInt();
 
                 switch (sceltaPrincipale) {
@@ -111,6 +112,7 @@ public class FacadeBiblioteca {
                     case 5:
                         // Torna al menu principale
                         System.out.println("Tornando al menu principale...");
+                        this.menu();
                         break;
                     default:
                         System.out.println("Scelta non valida. Riprova.");
@@ -278,8 +280,8 @@ public class FacadeBiblioteca {
                         // Modifica di un prestito (es. data restituzione)
                         System.out.print("Inserisci ID Prestito da modificare: ");
                         int idPrestito = intScanner.nextInt();
-                        
-                        Prestito nuovoPrestito = new Prestito( libro, utente, dataPrestito, null);
+
+                        Prestito nuovoPrestito = new Prestito(libro, utente, dataPrestito, null);
                         PrestitoDatabase.update(idPrestito, nuovoPrestito);
                         System.out.println("Prestito aggiornato con successo!");
                         break;
