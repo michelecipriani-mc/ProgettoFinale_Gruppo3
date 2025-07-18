@@ -1,7 +1,5 @@
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
 import java.sql.*;
 
 public class PrestitoDatabase {
@@ -47,7 +45,7 @@ public class PrestitoDatabase {
                     int id_utente = rs.getInt("id_utente");
                     String nome_utente = rs.getString("nome_utente");
                     String email = rs.getString("email");
-                    Utenti utente = new Utenti(id_utente, nome_utente, email);
+                    Utente utente = new Utente(id_utente, nome_utente, email);
 
                     Prestito prestito2 = new Prestito(id_prestito, libro, utente, data_prestito, data_restituzione);
                     listaPrestiti.add(prestito2);
@@ -88,7 +86,7 @@ public class PrestitoDatabase {
                 int id_utente = rs.getInt("id_utente");
                 String nome_utente = rs.getString("nome_utente");
                 String email = rs.getString("email");
-                Utenti utente = new Utenti(id_utente, nome_utente, email);
+                Utente utente = new Utente(id_utente, nome_utente, email);
 
                 rs.close();
                 ps.close();
