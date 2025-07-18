@@ -10,7 +10,7 @@ import java.time.format.DateTimeParseException;
 public class FacadeBiblioteca {
     LibroDatabase libroDatabase = new LibroDatabase();
     UtenteDatabase UtenteDatabase = new UtenteDatabase();
-    PrestitoDatabase PrestitoDatabase = new LibroDatabase();
+    PrestitoDatabase PrestitoDatabase = new PrestitoDatabase();
 
     // Metodo principale che mostra il menu generale della biblioteca
     public void menu() {
