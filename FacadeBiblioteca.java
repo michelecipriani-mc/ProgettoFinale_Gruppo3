@@ -8,9 +8,9 @@ import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
 public class FacadeBiblioteca {
-    LibroDatabase libroRepoService = new LibroDatabase();
-    UtenteDatabase UtenteRepoService = new UtenteDatabase();
-    PrestitoDatabase PrestitoRepoService = new LibroDatabase();
+    LibroDatabase libroDatabase = new LibroDatabase();
+    UtenteDatabase UtenteDatabase = new UtenteDatabase();
+    PrestitoDatabase PrestitoDatabase = new PrestitoDatabase();
 
     // Metodo principale che mostra il menu generale della biblioteca
     public void menu() {
@@ -79,30 +79,22 @@ public class FacadeBiblioteca {
                         String nome = stringScanner.nextLine();
                         System.out.print("Inserisci email: ");
                         String email = stringScanner.nextLine();
-                        Utente nuovoUtente = new Utente(nome, email);
-
-                        // Verifica se l'utente esiste già
-                        if (UtenteDatabase.getUtenti().contains(nuovoUtente)) {
-                            System.out.println("Errore: Utente con lo stesso nome e email già presente.");
-                        } else {
-                            UtenteDatabase.insert(nuovoUtente);
-                            System.out.println("Utente inserito con successo!");
-                        }
-                        break;
+                        Utente nuovoUtente = new Utente(0, nome, email);
+                        UtenteDatabase.insert(nuovoUtente);
                     case 2:
-                    // Modifica di un utente esistente
-                    Scanner s2 = new Scanner(System.in);
-                    Scanner s = new Scanner(System.in);
+                        // Modifica di un utente esistente
+                        Scanner s2 = new Scanner(System.in);
+                        Scanner s = new Scanner(System.in);
                         System.out.println("Inserisci il nome utente: ");
-                        String nome = s2.nextLine();
+                        nome = s2.nextLine();
                         System.out.println("Inserisci email: ");
-                        String email = s2.nextLine();
-                    
+                        email = s2.nextLine();
+
                         System.out.println("Inseriscila l id dell attore da aggiornare: ");
                         int id_utente = s.nextInt();
 
                         Utente u = new Utente(id_utente, nome, email);
-                        UtenteDatabase.update(id_utente,u);
+                        UtenteDatabase.update(u);
 
                         break;
                     case 3:
@@ -110,7 +102,7 @@ public class FacadeBiblioteca {
                         System.out.print("Inserisci ID utente da cancellare: ");
                         id_utente = intScanner.nextInt();
                         UtenteDatabase.delete(id_utente);
-                        }
+
                         break;
                     case 4:
                         // Visualizzazione di tutti gli utenti
@@ -126,12 +118,11 @@ public class FacadeBiblioteca {
                 }
             } while (scelta != 5);
 
-        }catch(
+        } catch (
 
-    Exception e)
-    {
-        System.err.println("Errore nel menu utente: " + e.getMessage());
-    }
+        Exception e) {
+            System.err.println("Errore nel menu utente: " + e.getMessage());
+        }
     }
 
     // Menu per la gestione dei libri
@@ -171,8 +162,9 @@ public class FacadeBiblioteca {
                             break;
                         }
                         java.sql.Date d1 = new java.sql.Date(d.getTime());
-                        Libro l = new Libro(titolo, autore, d1);
-                        LibriDatabase.insert(l);
+                        int id_libro = intScanner.nextInt();
+                        Libro l = new Libro(id_libro, titolo, autore, d1);
+                        libroDatabase.insert(l);
                         System.out.println("Libro inserito con successo!");
                         break;
                     case 2:
@@ -197,8 +189,8 @@ public class FacadeBiblioteca {
                         System.out.println("Inseriscila l id dell libro da aggiornare: ");
                         int cod_l = s.nextInt();
 
-                        Libro libro = new Libro(cod_l, titolo, autore, d123);
-                        libro.update(cod_l, libro);
+                        Libro libro = new Libro(cod_l, titolo1, autore1, d123);
+                        libroDatabase.update(libro, cod_l);
 
                         break;
                     case 3:
@@ -208,12 +200,12 @@ public class FacadeBiblioteca {
                         // Cancellazione di un utente
                         System.out.print("Inserisci ID utente da cancellare: ");
                         id_libro = intScanner.nextInt();
-                        LibroDatabase.delete(id_libro);
+                        libroDatabase.delete(id_libro);
 
                         break;
                     case 4:
                         // Visualizzazione di tutti i libri
-                        LibriDatabase.readAll();
+                        libroDatabase.readAll();
                         break;
                     case 5:
                         // Torna al menu principale
@@ -261,14 +253,14 @@ public class FacadeBiblioteca {
 
                         System.out.print("Inserisci ID Libro: ");
                         int idLibro = intScanner.nextInt();
-                        Libro libro = LibriDatabase.getLibroById(idLibro);
+                        Libro libro = LibroDatabase.getLibroById(idLibro);
                         if (libro == null) {
                             System.out.println("Libro con ID " + idLibro + " non trovato.");
                             break;
                         }
 
                         // Controllo: il libro non deve essere già in prestito
-                        if (PrestitiDatabase.isLibroInPrestito(libro)) {
+                        if (PrestitoDatabase.isLibroInPrestito(libro)) {
                             System.out.println("Errore: Il libro '" + libro.getTitolo() + "' è già in prestito.");
                             break;
                         }
@@ -277,81 +269,31 @@ public class FacadeBiblioteca {
                         LocalDate dataPrestito = LocalDate.now();
 
                         // Creazione e inserimento del nuovo prestito
-                        Prestiti nuovoPrestito = new Prestiti(0, libro, utente, dataPrestito, null);
-                        PrestitiDatabase.insert(nuovoPrestito);
+                        Prestito nuovoPrestito = new Prestito(0, libro, utente, dataPrestito, null);
+                        PrestitoDatabase.insert(nuovoPrestito);
                         System.out.println("Prestito registrato con successo per il libro '" + libro.getTitolo()
-                                + "' a " + utente.getNome() + ".");
+                                + "' a " + utente.getNome_utente() + ".");
                         break;
                     case 2:
                         // Modifica di un prestito (es. data restituzione)
                         System.out.print("Inserisci ID Prestito da modificare: ");
                         int idPrestito = intScanner.nextInt();
-                        Prestiti prestitoEsistente = PrestitiDatabase.getPrestitoById(idPrestito);
-
-                        if (prestitoEsistente == null) {
-                            System.out.println("Prestito con ID " + idPrestito + " non trovato.");
-                            break;
-                        }
-
-                        System.out.println("Stai modificando il prestito: " + prestitoEsistente);
-                        System.out.print("Vuoi impostare la data di restituzione? (s/n): ");
-                        stringScanner.nextLine();
-                        String sceltaRestituzione = stringScanner.nextLine();
-
-                        LocalDate dataRestituzioneAggiornata = prestitoEsistente.getData_restituzione();
-
-                        if (sceltaRestituzione.equalsIgnoreCase("s")) {
-                            System.out.print("Inserisci la nuova data di restituzione (YYYY-MM-DD): ");
-                            String dataRestituzioneStr = stringScanner.nextLine();
-                            try {
-                                dataRestituzioneAggiornata = LocalDate.parse(dataRestituzioneStr);
-                                if (dataRestituzioneAggiornata.isBefore(prestitoEsistente.getData_prestito())) {
-                                    System.out.println(
-                                            "La data di restituzione non può essere precedente alla data di prestito. Lasciando la data originale.");
-                                    dataRestituzioneAggiornata = prestitoEsistente.getData_restituzione();
-                                }
-                            } catch (DateTimeParseException e) {
-                                System.out.println(
-                                        "Formato data non valido. Lasciando la data originale. (Es: 2023-10-26)");
-                            }
-                        }
-
-                        // Aggiornamento del prestito
-                        Prestiti prestitoAggiornato = new Prestiti(
-                                prestitoEsistente.getId_prestito(),
-                                prestitoEsistente.getId_libro(),
-                                prestitoEsistente.getId_utente(),
-                                prestitoEsistente.getData_prestito(),
-                                dataRestituzioneAggiornata);
-                        PrestitiDatabase.update(idPrestito, prestitoAggiornato);
+                        
+                        Prestito nuovoPrestito = new Prestito( libro, utente, dataPrestito, null);
+                        PrestitoDatabase.update(idPrestito, nuovoPrestito);
                         System.out.println("Prestito aggiornato con successo!");
                         break;
                     case 3:
                         // Eliminazione di un prestito
-                        System.out.print("Inserisci ID Prestito da eliminare: ");
-                        idPrestito = intScanner.nextInt();
-                        prestitoEsistente = PrestitiDatabase.getPrestitoById(idPrestito);
+                        System.out.println("Inserisci id prestito da eliminare");
+                        int prestitoDaEliminare = intScanner.nextInt();
+                        PrestitoDatabase.delete(idPrestito);
 
-                        if (prestitoEsistente == null) {
-                            System.out.println("Prestito con ID " + idPrestito + " non trovato.");
-                            break;
-                        }
-
-                        System.out.println("Confermi l'eliminazione del prestito: " + prestitoEsistente + " (s/n)?");
-                        stringScanner.nextLine();
-                        String confermaEliminazione = stringScanner.nextLine();
-                        if (confermaEliminazione.equalsIgnoreCase("s")) {
-                            PrestitiDatabase.delete(idPrestito);
-                            System.out.println("Prestito eliminato con successo!");
-                        } else {
-                            System.out.println("Eliminazione annullata.");
-                        }
                         break;
                     case 4:
                         // Visualizzazione di tutti i prestiti
-                        PrestitiDatabase.readAll();
-                        break;
-                    case 5:
+                        titoDatabase.readAll();
+
                         // Torna al menu principale
                         System.out.println("Tornando al menu principale...");
                         break;
