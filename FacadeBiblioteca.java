@@ -9,8 +9,8 @@ import java.time.format.DateTimeParseException;
 
 public class FacadeBiblioteca {
     LibroDatabase libroDatabase = new LibroDatabase();
-    UtenteDatabase UtenteDatabase = new UtenteDatabase();
-    PrestitoDatabase PrestitoDatabase = new LibroDatabase();
+    UtenteDatabase utenteDatabase = new UtenteDatabase();
+    PrestitoDatabase prestitoDatabase = new PrestitoDatabase();
 
     // Metodo principale che mostra il menu generale della biblioteca
     public void menu() {
@@ -81,7 +81,7 @@ public class FacadeBiblioteca {
                         System.out.print("Inserisci email: ");
                         String email = stringScanner.nextLine();
                         Utente nuovoUtente = new Utente(0, nome, email);
-                        UtenteDatabase.insert(nuovoUtente);
+                        utenteDatabase.insert(nuovoUtente);
                     case 2:
                         // Modifica di un utente esistente
                         Scanner s2 = new Scanner(System.in);
@@ -95,19 +95,19 @@ public class FacadeBiblioteca {
                         int id_utente = s.nextInt();
 
                         Utente u = new Utente(id_utente, nome, email);
-                        UtenteDatabase.update(u);
+                        utenteDatabase.update(u);
 
                         break;
                     case 3:
                         // Cancellazione di un utente
                         System.out.print("Inserisci ID utente da cancellare: ");
                         id_utente = intScanner.nextInt();
-                        UtenteDatabase.delete(id_utente);
+                        utenteDatabase.delete(id_utente);
 
                         break;
                     case 4:
                         // Visualizzazione di tutti gli utenti
-                        UtenteDatabase.readAll();
+                        utenteDatabase.readAll();
                         break;
                     case 5:
                         // Torna al menu principale
@@ -173,11 +173,11 @@ public class FacadeBiblioteca {
                         // Modifica di un libro esistente
                         Scanner s2 = new Scanner(System.in);
                         Scanner s = new Scanner(System.in);
-                        System.out.println("Inserisci il titolo: ");
+                        System.out.println("Inserisci il nuovo titolo: ");
                         String titolo1 = s2.nextLine();
-                        System.out.println("Inserisci il autore: ");
+                        System.out.println("Inserisci il nuovo autore: ");
                         String autore1 = s2.nextLine();
-                        System.out.println("Inserisci la data pub: ");
+                        System.out.println("Inserisci la nuova data pub: ");
                         String data_publicazione = s2.nextLine();
                         SimpleDateFormat sdf1 = new SimpleDateFormat("dd/MM/yyyy");
                         Date d12 = null;
@@ -190,6 +190,7 @@ public class FacadeBiblioteca {
 
                         System.out.println("Inseriscila l id dell libro da aggiornare: ");
                         int cod_l = s.nextInt();
+                        
 
                         Libro libro = new Libro(cod_l, titolo1, autore1, d123);
                         libroDatabase.update(libro, cod_l);
@@ -244,57 +245,86 @@ public class FacadeBiblioteca {
 
                 switch (scelta) {
                     case 1:
-                        // Registrazione di un nuovo prestito
-                        System.out.print("Inserisci ID Utente: ");
-                        int idUtente = intScanner.nextInt();
-                        Utente utente = UtenteDatabase.getUtenteById(idUtente);
-                        if (utente == null) {
-                            System.out.println("Utente con ID " + idUtente + " non trovato.");
-                            break;
-                        }
+                           System.out.println("Inserisci id prestito: ");
+                           int id_prestito = intScanner.nextInt();
+                           System.out.println("Inserisci data prestito: ");
+                           String dataPrestito = stringScanner.nextLine();
+                           SimpleDateFormat sdf1 = new SimpleDateFormat("dd/MM/yyyy");
+                           Date data = null;
+                           try {
+                           data = sdf1.parse(dataPrestito);
+                           } catch (ParseException e) {
+                           e.printStackTrace();
+                           }
+                           java.sql.Date d123 = new java.sql.Date(data.getTime());
 
-                        System.out.print("Inserisci ID Libro: ");
-                        int idLibro = intScanner.nextInt();
-                        Libro libro = LibroDatabase.getLibroById(idLibro);
-                        if (libro == null) {
-                            System.out.println("Libro con ID " + idLibro + " non trovato.");
-                            break;
-                        }
+                           System.out.println("Inserisci data restituzione: ");
+                           String dataRestituzione = stringScanner.nextLine();
+                           SimpleDateFormat sdf2 = new SimpleDateFormat("dd/MM/yyyy");
+                           Date data2 = null;
+                           try {
+                           data2 = sdf2.parse(dataRestituzione);
+                           } catch (ParseException e) {
+                           e.printStackTrace();
+                           }
+                           java.sql.Date d124 = new java.sql.Date(data2.getTime());
 
-                        // Controllo: il libro non deve essere già in prestito
-                        if (PrestitoDatabase.isLibroInPrestito(libro)) {
-                            System.out.println("Errore: Il libro '" + libro.getTitolo() + "' è già in prestito.");
-                            break;
-                        }
+                           System.out.println("Inserisci l id dell libro che vuoi prendere in prestito: ");
+                           int id_libro = intScanner.nextInt();
 
-                        // Data del prestito impostata a oggi
-                        LocalDate dataPrestito = LocalDate.now();
+                           System.out.println("Inserisci l id utente da assegnare: ");
+                           int id_utente = intScanner.nextInt();
+                           
+                           Prestito prestito = new Prestito(id_prestito, libroDatabase.read(id_libro),utenteDatabase.read(id_utente), d123, d124);
+                           prestitoDatabase.insert(prestito);
+                           break;
 
-                        // Creazione e inserimento del nuovo prestito
-                        Prestito nuovoPrestito = new Prestito(0, libro, utente, dataPrestito, null);
-                        PrestitoDatabase.insert(nuovoPrestito);
-                        System.out.println("Prestito registrato con successo per il libro '" + libro.getTitolo()
-                                + "' a " + utente.getNome_utente() + ".");
-                        break;
                     case 2:
-                        // Modifica di un prestito (es. data restituzione)
-                        System.out.print("Inserisci ID Prestito da modificare: ");
-                        int idPrestito = intScanner.nextInt();
+                          
+                           System.out.println("Inserisci data prestito: ");
+                           String dataPrestito2 = stringScanner.nextLine();
+                           SimpleDateFormat sdf3 = new SimpleDateFormat("dd/MM/yyyy");
+                           Date data3 = null;
+                           try {
+                           data3 = sdf3.parse(dataPrestito2);
+                           } catch (ParseException e) {
+                           e.printStackTrace();
+                           }
+                           java.sql.Date d1234 = new java.sql.Date(data3.getTime());
 
-                        Prestito nuovoPrestito = new Prestito(libro, utente, dataPrestito, null);
-                        PrestitoDatabase.update(idPrestito, nuovoPrestito);
-                        System.out.println("Prestito aggiornato con successo!");
+                           System.out.println("Inserisci data restituzione: ");
+                           String dataRestituzione2 = stringScanner.nextLine();
+                           SimpleDateFormat sdf4 = new SimpleDateFormat("dd/MM/yyyy");
+                           Date data4 = null;
+                           try {
+                           data4 = sdf4.parse(dataRestituzione2);
+                           } catch (ParseException e) {
+                           e.printStackTrace();
+                           }
+                           java.sql.Date nuovaData = new java.sql.Date(data4.getTime());
+
+                           System.out.println("Inserisci l id dell libro che vuoi prendere in prestito: ");
+                           int idLibro = intScanner.nextInt();
+
+                           System.out.println("Inserisci l id utente da assegnare: ");
+                           int idUtente = intScanner.nextInt();
+
+                           System.out.println("Inserisci il nuovo id Prestito: ");
+                           int idPrestitoNuovo = intScanner.nextInt();
+                           
+                           Prestito prestitoAggiornato = new Prestito(idPrestitoNuovo, libroDatabase.read(idLibro),utenteDatabase.read(idUtente), d1234, nuovaData);
+                           prestitoDatabase.update(prestitoAggiornato);
                         break;
                     case 3:
                         // Eliminazione di un prestito
                         System.out.println("Inserisci id prestito da eliminare");
                         int prestitoDaEliminare = intScanner.nextInt();
-                        PrestitoDatabase.delete(idPrestito);
+                        prestitoDatabase.delete(prestitoDaEliminare);
 
                         break;
                     case 4:
                         // Visualizzazione di tutti i prestiti
-                        titoDatabase.readAll();
+                        prestitoDatabase.readAll();
 
                         // Torna al menu principale
                         System.out.println("Tornando al menu principale...");

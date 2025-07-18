@@ -102,7 +102,7 @@ public class PrestitoDatabase {
         }
     }
 
-    public void update(int id, Prestito p) {
+    public void update( Prestito p) {
         try {
             Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/biblioteca", "root", "root");
             String sql = "UPDATE prestito SET data_prestito = ?, data_restituzione = ?, id_libro = ?, id_utente = ? WHERE id_prestito = ?";
@@ -111,7 +111,7 @@ public class PrestitoDatabase {
             ps.setDate(2, p.getData_restituzione());
             ps.setInt(3, p.getId_libro().getId_libro());
             ps.setInt(4, p.getId_utente().getId_utente());
-            ps.setInt(5, id);
+            ps.setInt(5,p.getId_prestito());
             ps.executeUpdate();
             ps.close();
             conn.close();
