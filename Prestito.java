@@ -1,16 +1,13 @@
-
-
-import java.time.LocalDate;
 import java.sql.Date;
 
 public class Prestito {
 	private int id_prestito;
     private Libro id_libro;
-    private Utenti id_utente;
+    private Utente id_utente;
     private Date data_prestito;
     private Date data_restituzione;
 
-    public Prestito(int id_prestito, Libro id_libro, Utenti id_utente, Date data_prestito,
+    public Prestito(int id_prestito, Libro id_libro, Utente id_utente, Date data_prestito,
             Date data_restituzione) {
         this.id_prestito = id_prestito;
         this.id_libro = id_libro;
@@ -35,11 +32,11 @@ public class Prestito {
         this.id_libro = id_libro;
     }
 
-    public Utenti getId_utente() {
+    public Utente getId_utente() {
         return id_utente;
     }
 
-    public void setId_utente(Utenti id_utente) {
+    public void setId_utente(Utente id_utente) {
         this.id_utente = id_utente;
     }
 
