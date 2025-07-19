@@ -1,8 +1,11 @@
+package com.example;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
+
 // Import aggiuntivi necessari per LocalDate e DateTimeParseException
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
@@ -15,7 +18,7 @@ public class FacadeBiblioteca {
     // Metodo principale che mostra il menu generale della biblioteca
     public void menu() {
         try (Scanner intScanner = new Scanner(System.in);
-                Scanner stringScanner = new Scanner(System.in)) {
+            Scanner stringScanner = new Scanner(System.in)) {
 
             int sceltaPrincipale;
             do {
@@ -76,12 +79,12 @@ public class FacadeBiblioteca {
                     case 1:
                         // Inserimento di un nuovo utente
                         System.out.print("Inserisci nome utente: ");
-                        stringScanner.nextLine(); // Consuma newline
                         String nome = stringScanner.nextLine();
                         System.out.print("Inserisci email: ");
                         String email = stringScanner.nextLine();
                         Utente nuovoUtente = new Utente(0, nome, email);
                         utenteDatabase.insert(nuovoUtente);
+                        break;
                     case 2:
                         // Modifica di un utente esistente
                         Scanner s2 = new Scanner(System.in);
@@ -91,12 +94,11 @@ public class FacadeBiblioteca {
                         System.out.println("Inserisci email: ");
                         email = s2.nextLine();
 
-                        System.out.println("Inseriscila l id dell attore da aggiornare: ");
+                        System.out.println("Inseriscila ID utente da aggiornare: ");
                         int id_utente = s.nextInt();
 
                         Utente u = new Utente(id_utente, nome, email);
                         utenteDatabase.update(u);
-
                         break;
                     case 3:
                         // Cancellazione di un utente
@@ -107,7 +109,18 @@ public class FacadeBiblioteca {
                         break;
                     case 4:
                         // Visualizzazione di tutti gli utenti
-                        utenteDatabase.readAll();
+                        List<Utente> utenti = utenteDatabase.readAll();
+                        if (utenti.isEmpty()) {
+                            System.out.println("Nessun utente trovato.");
+                        } else {
+                            System.out.println("Lista Utenti: ");
+                            for (Utente utente : utenti) {
+                                System.out.println("ID: " + utente.getId_utente());
+                                System.out.println("Nome: " + utente.getNome_utente());
+                                System.out.println("Email: " + utente.getEmail());
+                                System.out.println("------------------------");
+                            }
+                        }
                         break;
                     case 5:
                         // Torna al menu principale
