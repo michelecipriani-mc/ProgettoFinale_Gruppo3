@@ -5,7 +5,7 @@ import java.util.List;
 public class UtenteDatabase {
     public void insert(Utente utente) {
         try {
-        Connection c = DriverManager.getConnection("jdbc:mysql://localhost:3306/biblioteca","root","");
+        Connection c = DriverManager.getConnection("jdbc:mysql://localhost:3306/biblioteca","root","root");
         String queryInsert= "INSERT INTO `utente`(`id_utente`,`nome_utente`,`email`) VALUES (?,?,?)";
         PreparedStatement ps = c.prepareStatement(queryInsert);
 
@@ -45,7 +45,7 @@ public class UtenteDatabase {
 	
 	public Utente read(int id_utente) {
 		try {
-			Connection c = DriverManager.getConnection("jdbc:mysql://localhost:3306/biblioteca","root","");
+			Connection c = DriverManager.getConnection("jdbc:mysql://localhost:3306/biblioteca","root","root");
 			String querySelect = "SELECT * FROM `utente` WHERE `id_utente`=?";
 			PreparedStatement ps = c.prepareStatement(querySelect);
 			ps.setInt(1,id_utente);
@@ -66,7 +66,7 @@ public class UtenteDatabase {
 	
 	public void update(Utente utente) {
 		try {
-			Connection c = DriverManager.getConnection("jdbc:mysql://localhost:3306/biblioteca","root","");
+			Connection c = DriverManager.getConnection("jdbc:mysql://localhost:3306/biblioteca","root","root");
 			String queryUpdate = " UPDATE `utente` SET `nome_utente`=?,`email_utente`=? WHERE `id_utente`=?";
 			PreparedStatement ps = c.prepareStatement(queryUpdate);
 			ps.setString(1, utente.getNome_utente());
