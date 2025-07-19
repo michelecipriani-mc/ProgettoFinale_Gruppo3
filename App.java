@@ -1,6 +1,4 @@
-package com.example;
-
-public class Main {
+public class App {
     public static void main(String[] args) {
         FacadeBiblioteca app = new FacadeBiblioteca();
         app.menu();
