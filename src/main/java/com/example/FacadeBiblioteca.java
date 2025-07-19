@@ -1,4 +1,4 @@
-package src.main.java.com.example;
+package com.example;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

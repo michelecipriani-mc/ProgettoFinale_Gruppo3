@@ -1,4 +1,4 @@
-package src.main.java.com.example;
+package com.example;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
@@ -14,7 +14,7 @@ public class LibroDatabase {
 	
 	public void insert(Libro libro) {
 	try {
-	Connection c = DriverManager.getConnection("jdbc:mysql://localhost:3306/biblioteca","root","Mike261214!");
+	Connection c = DriverManager.getConnection("jdbc:mysql://localhost:3306/biblioteca","root","");
 	String queryInsert= "INSERT INTO `libro`(`titolo`,`autore`,`data_pubblicazione`) VALUES (?,?,?)";
 	PreparedStatement ps = c.prepareStatement(queryInsert);
 	
@@ -32,7 +32,7 @@ public class LibroDatabase {
 	public List<Libro> readAll() {
 		List<Libro> listaLibri = new ArrayList<>();
 		try {
-			Connection c = DriverManager.getConnection("jdbc:mysql://localhost:3306/biblioteca","root","Mike261214!");
+			Connection c = DriverManager.getConnection("jdbc:mysql://localhost:3306/biblioteca","root","");
 			String querySelect = "SELECT * FROM `libro`";
 			Statement s = c.createStatement();
 			ResultSet rs = s.executeQuery(querySelect);
@@ -55,7 +55,7 @@ public class LibroDatabase {
 	
 	public Libro read(int id_libro) {
 		try {
-			Connection c = DriverManager.getConnection("jdbc:mysql://localhost:3306/biblioteca","root","Mike261214!");
+			Connection c = DriverManager.getConnection("jdbc:mysql://localhost:3306/biblioteca","root","");
 			String querySelect = "SELECT * FROM `libro` WHERE `id_libro`=?";
 			PreparedStatement ps = c.prepareStatement(querySelect);
 			ps.setInt(1,id_libro);
@@ -77,7 +77,7 @@ public class LibroDatabase {
 	
 	public void update(Libro libro, int id) {
 		try {
-			Connection c = DriverManager.getConnection("jdbc:mysql://localhost:3306/biblioteca","root","Mike261214!");
+			Connection c = DriverManager.getConnection("jdbc:mysql://localhost:3306/biblioteca","root","");
 			String queryUpdate = " UPDATE `libro` SET `titolo`=?,`autore`=?,`data_pubblicazione`=? WHERE `id_libro`=?";
 			PreparedStatement ps = c.prepareStatement(queryUpdate);
 			ps.setString(1, libro.getTitolo());
@@ -95,7 +95,7 @@ public class LibroDatabase {
 	
 	public void delete(int id) {
 		try {
-			Connection c = DriverManager.getConnection("jdbc:mysql://localhost:3306/biblioteca","root","Mike261214!");
+			Connection c = DriverManager.getConnection("jdbc:mysql://localhost:3306/biblioteca","root","");
 			String queryDelete = "DELETE FROM `libro` WHERE `id_libro`=?";
 			PreparedStatement ps = c.prepareStatement(queryDelete);
 			ps.setInt(1, id);
