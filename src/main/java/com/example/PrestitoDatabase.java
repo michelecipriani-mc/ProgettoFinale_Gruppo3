@@ -1,11 +1,13 @@
+package src.main.java.com.example;
 
 import java.util.ArrayList;
+
 import java.sql.*;
 
 public class PrestitoDatabase {
     public void insert(Prestito prestito) {
         try {
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/biblioteca", "root", "root");
+            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/biblioteca", "root", "Mike261214!");
             String sql = "INSERT INTO prestito (data_prestito, data_restituzione, id_libro, id_utente) VALUES (?, ?, ?, ?)";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setDate(1, prestito.getData_prestito());
@@ -22,7 +24,7 @@ public class PrestitoDatabase {
     public ArrayList<Prestito> readAll() {
         ArrayList<Prestito> listaPrestiti = new ArrayList<>();
         try {
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/biblioteca", "root", "root");
+            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/biblioteca", "root", "Mike261214!");
             String sql = "SELECT * FROM prestito " +
                     " JOIN libro ON prestito.id_libro = libro.id_libro " +
                     " JOIN utente ON libro.id_utente = utente.id_utente ";
@@ -59,7 +61,7 @@ public class PrestitoDatabase {
 
     public Prestito read(int id_prestito) {
         try {
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/biblioteca", "root", "root");
+            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/biblioteca", "root", "Mike261214!");
             String sql = "SELECT * FROM prestito " +
                     "JOIN libro ON prestito.id_libro = libro.id_libro " +
                     "JOIN utente ON prestito.id_utente = utente.id_utente " +
@@ -104,7 +106,7 @@ public class PrestitoDatabase {
 
     public void update( Prestito p) {
         try {
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/biblioteca", "root", "root");
+            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/biblioteca", "root", "Mike261214!");
             String sql = "UPDATE prestito SET data_prestito = ?, data_restituzione = ?, id_libro = ?, id_utente = ? WHERE id_prestito = ?";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setDate(1, p.getData_prestito());
@@ -122,7 +124,7 @@ public class PrestitoDatabase {
 
     public void delete(int id) {
         try {
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/biblioteca", "root", "root");
+            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/biblioteca", "root", "Mike261214!");
             String sql = "DELETE FROM prestito WHERE id_prestito = ?";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, id);

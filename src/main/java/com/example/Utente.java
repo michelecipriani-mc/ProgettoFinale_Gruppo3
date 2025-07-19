@@ -1,3 +1,4 @@
+package src.main.java.com.example;
 public class Utente {
 	private int id_utente;
     private String nome_utente;

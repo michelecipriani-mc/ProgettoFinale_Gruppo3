@@ -1,11 +1,15 @@
+package src.main.java.com.example;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+// import java.util.List;
 import java.util.Scanner;
+
 // Import aggiuntivi necessari per LocalDate e DateTimeParseException
-import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
+// import java.time.LocalDate;
+// import java.time.format.DateTimeParseException;
 
 public class FacadeBiblioteca {
     LibroDatabase libroDatabase = new LibroDatabase();
@@ -14,9 +18,7 @@ public class FacadeBiblioteca {
 
     // Metodo principale che mostra il menu generale della biblioteca
     public void menu() {
-        try (Scanner intScanner = new Scanner(System.in);
-                Scanner stringScanner = new Scanner(System.in)) {
-
+        try (Scanner intScanner = new Scanner(System.in); Scanner stringScanner = new Scanner(System.in)) {
             int sceltaPrincipale;
             do {
                 System.out.println("\n--- Menu Principale Biblioteca ---");
@@ -25,9 +27,7 @@ public class FacadeBiblioteca {
                 System.out.println("'3' Gestione Prestiti");
                 System.out.println("'4' Esci");
                 System.out.print("Scegli un'opzione: ");
-                
                 sceltaPrincipale = intScanner.nextInt();
-
                 switch (sceltaPrincipale) {
                     case 1:
                         // Gestione utenti
@@ -50,7 +50,6 @@ public class FacadeBiblioteca {
                         break;
                 }
             } while (sceltaPrincipale != 4);
-
         } catch (Exception e) {
             System.err.println("Errore nel menu principale: " + e.getMessage());
         }
@@ -58,8 +57,7 @@ public class FacadeBiblioteca {
 
     // Menu per la gestione degli utenti
     private void menuUtente() {
-        try (Scanner intScanner = new Scanner(System.in);
-                Scanner stringScanner = new Scanner(System.in)) {
+        try (Scanner intScanner = new Scanner(System.in); Scanner stringScanner = new Scanner(System.in)) {
 
             int scelta;
             do {
@@ -76,12 +74,12 @@ public class FacadeBiblioteca {
                     case 1:
                         // Inserimento di un nuovo utente
                         System.out.print("Inserisci nome utente: ");
-                        stringScanner.nextLine(); // Consuma newline
                         String nome = stringScanner.nextLine();
                         System.out.print("Inserisci email: ");
                         String email = stringScanner.nextLine();
                         Utente nuovoUtente = new Utente(0, nome, email);
                         utenteDatabase.insert(nuovoUtente);
+                        break;
                     case 2:
                         // Modifica di un utente esistente
                         Scanner s2 = new Scanner(System.in);
@@ -90,24 +88,31 @@ public class FacadeBiblioteca {
                         nome = s2.nextLine();
                         System.out.println("Inserisci email: ");
                         email = s2.nextLine();
-
-                        System.out.println("Inseriscila l id dell attore da aggiornare: ");
+                        System.out.println("Inserisci ID utente da aggiornare: ");
                         int id_utente = s.nextInt();
-
                         Utente u = new Utente(id_utente, nome, email);
                         utenteDatabase.update(u);
-
                         break;
                     case 3:
                         // Cancellazione di un utente
                         System.out.print("Inserisci ID utente da cancellare: ");
                         id_utente = intScanner.nextInt();
                         utenteDatabase.delete(id_utente);
-
                         break;
                     case 4:
                         // Visualizzazione di tutti gli utenti
-                        utenteDatabase.readAll();
+                            List<Utente> utenti = utenteDatabase.readAll();
+                            if (utenti.isEmpty()) {
+                            System.out.println("Nessun utente trovato.");
+                            } else {
+                                System.out.println("Lista utenti: ");
+                                for (Utente utente : utenti) {
+                                    System.out.println("ID: " + utente.getId_utente());
+                                    System.out.println("Nome: " + utente.getNome_utente());
+                                    System.out.println("Email: " + utente.getEmail());
+                                    System.out.println("------------------------");
+                                }
+                            }
                         break;
                     case 5:
                         // Torna al menu principale
@@ -119,18 +124,14 @@ public class FacadeBiblioteca {
                         break;
                 }
             } while (scelta != 5);
-
-        } catch (
-
-        Exception e) {
+        } catch (Exception e) {
             System.err.println("Errore nel menu utente: " + e.getMessage());
         }
     }
 
     // Menu per la gestione dei libri
     private void menuLibro() {
-        try (Scanner intScanner = new Scanner(System.in);
-                Scanner stringScanner = new Scanner(System.in)) {
+        try (Scanner intScanner = new Scanner(System.in); Scanner stringScanner = new Scanner(System.in)) {
 
             int scelta;
             do {
